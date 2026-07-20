@@ -19,6 +19,29 @@ if (!prefersReducedMotion && "IntersectionObserver" in window) {
   document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
 }
 
+// Mobile-Navigation: Burger-Menü öffnen/schließen
+const nav = document.querySelector(".nav");
+const burger = document.querySelector(".nav__burger");
+
+if (nav && burger) {
+  const setOpen = (open) => {
+    nav.classList.toggle("is-open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+    burger.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
+  burger.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
+
+  nav.querySelectorAll(".nav__links a").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && nav.classList.contains("is-open")) setOpen(false);
+  });
+}
+
 // Portfolio-Akkordeon: eine Kategorie offen, Klick toggelt
 const rows = document.querySelectorAll(".workrow");
 
