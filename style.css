@@ -532,7 +532,7 @@ a { color: inherit; text-decoration: none; }
   left: calc(var(--track-gap) / -2);
   top: 0;
   height: clamp(280px, 46vh, 520px);
-  width: 2px;
+  width: 1px;
   transform: translateX(-50%);
   background: linear-gradient(
     to bottom,
