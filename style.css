@@ -507,7 +507,7 @@ a { color: inherit; text-decoration: none; }
 /* Trennlinie nur bei "Freie Arbeiten" — dort steht je Motiv ein eigenes Projekt.
    Mehr Abstand, damit die Linie Raum bekommt. */
 .workrow--projekte .workrow__track {
-  --track-gap: clamp(1.75rem, 3.5vw, 3rem);
+  --track-gap: clamp(2.5rem, 6vw, 5.5rem);
 }
 
 .workrow--projekte .workrow__track figure + figure::before {
