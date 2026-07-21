@@ -511,21 +511,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 .workrow--projekte .workrow__track figure + figure::before {
-  content: "";
+  content: "✦";
   position: absolute;
   left: calc(var(--track-gap) / -2);
-  top: 3%;
-  bottom: 3%;
-  width: 2px;
-  border-radius: 2px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(255, 61, 142, 0.9) 18%,
-    rgba(255, 61, 142, 0.9) 82%,
-    transparent 100%
-  );
+  /* auf halber Bildhöhe, damit der Funke nicht neben dem Text sitzt */
+  top: calc(clamp(280px, 46vh, 520px) / 2);
+  transform: translate(-50%, -50%);
+  color: var(--accent);
+  font-size: 1.35rem;
+  line-height: 1;
   pointer-events: none;
+  user-select: none;
 }
 
 .workrow__track img {
