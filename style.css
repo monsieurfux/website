@@ -476,7 +476,7 @@ a { color: inherit; text-decoration: none; }
 
 /* Horizontale Galerie-Leiste */
 .workrow__track {
-  --track-gap: clamp(1.5rem, 3vw, 2.75rem);
+  --track-gap: clamp(0.75rem, 1.5vw, 1.25rem);
   display: flex;
   gap: var(--track-gap);
   overflow-x: auto;
@@ -504,19 +504,25 @@ a { color: inherit; text-decoration: none; }
   scroll-snap-align: start;
 }
 
-/* Feine Trennlinie zwischen den Projekten, zu den Enden auslaufend */
-.workrow__track figure + figure::before {
+/* Trennlinie nur bei "Freie Arbeiten" — dort steht je Motiv ein eigenes Projekt.
+   Mehr Abstand, damit die Linie Raum bekommt. */
+.workrow--projekte .workrow__track {
+  --track-gap: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.workrow--projekte .workrow__track figure + figure::before {
   content: "";
   position: absolute;
   left: calc(var(--track-gap) / -2);
-  top: 4%;
-  bottom: 4%;
-  width: 1px;
+  top: 3%;
+  bottom: 3%;
+  width: 2px;
+  border-radius: 2px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 61, 142, 0.45) 22%,
-    rgba(255, 61, 142, 0.45) 78%,
+    rgba(255, 61, 142, 0.9) 18%,
+    rgba(255, 61, 142, 0.9) 82%,
     transparent 100%
   );
   pointer-events: none;
