@@ -12,6 +12,64 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="canonical" href="https://dennisgall.de/">
+
+  <!-- Open Graph: ohne diese Tags zeigt jeder geteilte Link nackten Text -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dennis Gall">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://dennisgall.de/">
+  <meta property="og:title" content="Dennis Gall — Design &amp; Fotografie, Köln">
+  <meta property="og:description" content="Portraits, Business- und Hochzeitsfotografie aus Köln. Und Creatives für Marken wie TEDi, Huawei und E.ON — Social Media, Motion und KI-gestützte Bildwelten.">
+  <meta property="og:image" content="https://dennisgall.de/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dennis Gall — Fotografie, Design & AI. Köln.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dennis Gall — Design &amp; Fotografie, Köln">
+  <meta name="twitter:description" content="Portraits, Business- und Hochzeitsfotografie aus Köln. Und Creatives für Marken wie TEDi, Huawei und E.ON.">
+  <meta name="twitter:image" content="https://dennisgall.de/assets/og-image.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://dennisgall.de/#dennis",
+        "name": "Dennis Gall",
+        "url": "https://dennisgall.de/",
+        "email": "mail@dennisgall.de",
+        "telephone": "+4917661618676",
+        "jobTitle": "Senior Creative Designer",
+        "knowsAbout": ["Portraitfotografie", "Hochzeitsfotografie", "Businessfotografie", "Art Direction", "Motion Design", "Generative Bildwelten"],
+        "sameAs": ["https://www.instagram.com/monsieurfux"],
+        "worksFor": { "@type": "Organization", "name": "Mawave" }
+      },
+      {
+        "@type": ["LocalBusiness", "ProfessionalService"],
+        "@id": "https://dennisgall.de/#studio",
+        "name": "Dennis Gall Photography",
+        "url": "https://dennisgall.de/",
+        "email": "mail@dennisgall.de",
+        "telephone": "+4917661618676",
+        "founder": { "@id": "https://dennisgall.de/#dennis" },
+        "foundingDate": "2010-04",
+        "image": "https://dennisgall.de/assets/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Am Godorfer Kirchweg 20",
+          "postalCode": "50997",
+          "addressLocality": "Köln",
+          "addressCountry": "DE"
+        },
+        "areaServed": { "@type": "City", "name": "Köln" }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -86,14 +144,14 @@
 
       <div class="worklist reveal">
         <article class="workrow">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-1">
             <span class="workrow__num">(01)</span>
             <h3 class="workrow__title">Por<em>traits</em></h3>
             <span class="workrow__count">9 Motive</span>
             <span class="workrow__tag">Fotografie</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-1" role="region">
             <div class="workrow__track">
               <figure><img src="assets/portraits/portrait-1.avif" alt="Portraitfotografie von Dennis Gall" loading="lazy"></figure>
               <figure><img src="assets/portraits/portrait-2.avif" alt="Portraitfotografie von Dennis Gall" loading="lazy"></figure>
@@ -109,14 +167,14 @@
         </article>
 
         <article class="workrow">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-2">
             <span class="workrow__num">(02)</span>
             <h3 class="workrow__title">Hoch<em>zeiten</em></h3>
             <span class="workrow__count">8 Motive</span>
             <span class="workrow__tag">Fotografie</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-2" role="region">
             <div class="workrow__track">
               <figure><img src="assets/hochzeiten/hochzeit-1.avif" alt="Hochzeitsfotografie von Dennis Gall" loading="lazy"></figure>
               <figure><img src="assets/hochzeiten/hochzeit-2.avif" alt="Hochzeitsfotografie von Dennis Gall" loading="lazy"></figure>
@@ -131,14 +189,14 @@
         </article>
 
         <article class="workrow">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-3">
             <span class="workrow__num">(03)</span>
             <h3 class="workrow__title">Busi<em>ness</em></h3>
             <span class="workrow__count">4 Motive</span>
             <span class="workrow__tag">Fotografie</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-3" role="region">
             <div class="workrow__track">
               <figure><img src="assets/business/business-1.jpg" alt="Businessfotografie von Dennis Gall" loading="lazy"></figure>
               <figure><img src="assets/business/business-2.jpg" alt="Businessfotografie von Dennis Gall" loading="lazy"></figure>
@@ -149,14 +207,14 @@
         </article>
 
         <article class="workrow">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-4">
             <span class="workrow__num">(04)</span>
             <h3 class="workrow__title">Social <em>Media</em></h3>
             <span class="workrow__count">Bald</span>
             <span class="workrow__tag">Design</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-4" role="region">
             <div class="workrow__empty">
               <span class="workrow__empty-spark">✦</span>
               Galerie in Arbeit — neue Motive folgen.
@@ -165,14 +223,14 @@
         </article>
 
         <article class="workrow">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-5">
             <span class="workrow__num">(05)</span>
             <h3 class="workrow__title">Digital <em>Design</em></h3>
             <span class="workrow__count">1 Motiv</span>
             <span class="workrow__tag">Design</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-5" role="region">
             <div class="workrow__track">
               <figure>
                 <img src="assets/digitaldesign/digitaldesign.jpg" alt="Digital-Design-Arbeit: Fotografie kombiniert mit KI-generierten Elementen" loading="lazy">
@@ -183,14 +241,14 @@
         </article>
 
         <article class="workrow workrow--projekte">
-          <button class="workrow__head" aria-expanded="false">
+          <button class="workrow__head" aria-expanded="false" aria-controls="workpanel-6">
             <span class="workrow__num">(06)</span>
             <h3 class="workrow__title">Freie <em>Arbeiten</em></h3>
             <span class="workrow__count">3 Motive</span>
             <span class="workrow__tag">Tools &amp; 3D</span>
             <span class="workrow__icon" aria-hidden="true">+</span>
           </button>
-          <div class="workrow__panel">
+          <div class="workrow__panel" id="workpanel-6" role="region">
             <div class="workrow__track">
               <figure>
                 <img src="assets/freie-arbeiten/clawd-meter-1.jpg" alt="Clawd Meter: 3D-gedrucktes Pixel-Gehäuse mit Display, das ein Maskottchen zeigt" loading="lazy">

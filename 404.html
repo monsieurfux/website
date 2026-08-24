@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seite nicht gefunden — Dennis Gall</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#0a0a0c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .nf {
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem clamp(1.25rem, 4vw, 4rem) 3rem;
+      gap: 1.4rem; align-items: flex-start;
+    }
+    .nf__code {
+      font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--ink-faint);
+    }
+    .nf__title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: clamp(2.4rem, 9vw, 6rem); line-height: 0.92;
+      letter-spacing: -0.04em;
+    }
+    .nf__title em {
+      font-family: var(--font-serif); font-style: italic;
+      font-weight: 400; color: var(--accent);
+    }
+    .nf__lead { color: var(--ink-muted); max-width: 46ch; }
+    .nf__links { display: flex; flex-wrap: wrap; gap: 1.6rem; margin-top: 0.6rem; }
+  </style>
+</head>
+<body>
+  <main class="nf">
+    <p class="nf__code">Fehler 404</p>
+    <h1 class="nf__title">Hier ist <em>nichts</em> <span class="accent">✦</span></h1>
+    <p class="nf__lead">Diese Seite gibt es nicht — oder nicht mehr. Vielleicht war der Link alt oder ein Buchstabe hat sich verlaufen.</p>
+    <div class="nf__links">
+      <a class="btn btn--accent" href="/">Zur Startseite</a>
+      <a class="btn" href="mailto:mail@dennisgall.de">Schreib mir</a>
+    </div>
+  </main>
+</body>
+</html>
