@@ -17,6 +17,16 @@
   --font-body: "Space Grotesk", -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Drei Kurven, mehr nicht. --ease-dramatic tragt die eine theatrale
+     Bewegung (Titel, Hero), --spring-smooth alle Reveals und Zustaende,
+     --ease-out bleibt die Stimme fuer Hover und Feedback. */
+  --ease-dramatic: cubic-bezier(0.77, 0, 0.175, 1);
+  --spring-smooth: linear(
+    0, 0.004, 0.016 2.3%, 0.063 4.7%, 0.141 7.2%,
+    0.25 9.9%, 0.601 16.5%, 0.815 21%, 0.929 25.2%,
+    0.987 29%, 1.025 33.5%, 1.042 38%, 1.04 43.5%,
+    1.027 50%, 1.013 57.5%, 1.005 67%, 1.001 79%, 1
+  );
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -360,8 +370,10 @@ a { color: inherit; text-decoration: none; }
 
 .reveal {
   opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transform: translateY(24px);
+  /* EIN Reveal-Vokabular fuer die ganze Seite: gleiche Distanz, gleiche
+     Dauer, gleiche Kurve. 36px/0.9s wirkte trage; 24px/0.75s sitzt. */
+  transition: opacity 0.75s var(--spring-smooth), transform 0.75s var(--spring-smooth);
 }
 
 .reveal.is-visible {
@@ -1095,7 +1107,6 @@ a { color: inherit; text-decoration: none; }
   }
   .marquee__track { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
-  .work__media img { transition: none; }
   .nav__links a { transition: none; }
   .nav.is-open .nav__links a { transform: none; }
 }
@@ -1123,4 +1134,222 @@ a { color: inherit; text-decoration: none; }
 figcaption a:focus-visible {
   outline-color: var(--accent);
   outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOTION — Personality: CINEMATIC
+   Drei Kurven: --ease-dramatic (Signatur), --spring-smooth (Reveals
+   und Zustaende), --ease-out (Hover). Keine vierte.
+
+   Alles hier animiert ausschliesslich transform, opacity und clip-path.
+   Kein transition: all, keine Layout-Eigenschaften.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ---------- Staffelung in Gruppen ----------
+   Vorher war jede Gruppe EIN .reveal — sechs CV-Zeilen sprangen als
+   Klotz herein. Jetzt tragt der Container nur den Trigger, die Kinder
+   staffeln. Kein einziges HTML-Attribut dafuer noetig. */
+
+.worklist.reveal,
+.services.reveal,
+.cv.reveal,
+.contact.reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.worklist > .workrow,
+.services > .service,
+.cv > .cv__row,
+.contact__grid > div {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s var(--spring-smooth), transform 0.75s var(--spring-smooth);
+}
+
+.worklist.is-visible > .workrow,
+.services.is-visible > .service,
+.cv.is-visible > .cv__row,
+.contact.is-visible .contact__grid > div {
+  opacity: 1;
+  transform: none;
+}
+
+/* 90ms Schritt, hoechstens sechs einzeln — danach kommen sie zusammen,
+   sonst wartet man dem Letzten beim Erscheinen zu. */
+.worklist.is-visible > .workrow:nth-child(1),
+.services.is-visible > .service:nth-child(1),
+.cv.is-visible > .cv__row:nth-child(1),
+.contact.is-visible .contact__grid > div:nth-child(1) { transition-delay: 0ms; }
+
+.worklist.is-visible > .workrow:nth-child(2),
+.services.is-visible > .service:nth-child(2),
+.cv.is-visible > .cv__row:nth-child(2),
+.contact.is-visible .contact__grid > div:nth-child(2) { transition-delay: 90ms; }
+
+.worklist.is-visible > .workrow:nth-child(3),
+.services.is-visible > .service:nth-child(3),
+.cv.is-visible > .cv__row:nth-child(3),
+.contact.is-visible .contact__grid > div:nth-child(3) { transition-delay: 180ms; }
+
+.worklist.is-visible > .workrow:nth-child(4),
+.cv.is-visible > .cv__row:nth-child(4) { transition-delay: 270ms; }
+
+.worklist.is-visible > .workrow:nth-child(5),
+.cv.is-visible > .cv__row:nth-child(5) { transition-delay: 360ms; }
+
+.worklist.is-visible > .workrow:nth-child(n + 6),
+.cv.is-visible > .cv__row:nth-child(n + 6) { transition-delay: 450ms; }
+
+/* ---------- Signatur 1: Abschnittstitel schieben sich frei ----------
+   Bewusst KEIN Wort-Split: "Leist<em>ungen</em>" und "Werde<em>gang</em>"
+   sind im Markup ein Wort aus zwei Knoten — ein Split nach Leerzeichen
+   wuerde sie auseinanderreissen. Die Maske braucht das gar nicht. */
+
+.lnw {
+  display: block;
+  overflow: hidden;
+  /* Luft im Clip-Rechteck, damit overflow:hidden keine Unterlaengen
+     abschneidet; die negative Margin nimmt sie im Fluss zurueck. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/* Eine Maske PRO ZEILE: mit nur einer Maske am h2 wuerde die erste
+   Zeile beim Hochschieben auf der zweiten landen statt beschnitten
+   zu werden. */
+.lnw > .ln {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1s var(--ease-dramatic);
+}
+
+.reveal.is-visible .lnw > .ln { transform: none; }
+.reveal.is-visible .lnw:nth-child(2) > .ln { transition-delay: 110ms; }
+.reveal.is-visible .lnw:nth-child(3) > .ln { transition-delay: 220ms; }
+
+/* ---------- Signatur 2: Ken Burns auf dem Hero-Foto ---------- */
+
+.hero__photo {
+  transform: scale(1.07);
+  animation: kenburns 1.9s var(--ease-dramatic) 0.15s forwards;
+}
+
+@keyframes kenburns {
+  to { transform: scale(1.02); }
+}
+
+/* Nach dem Einsetzen uebernimmt JS die Transform fuer die Parallaxe —
+   zwei Schreiber auf derselben Eigenschaft wuerden sich sonst pruegeln. */
+.hero__photo.is-settled { animation: none; }
+
+/* ---------- Galeriebilder beim Aufklappen ---------- */
+
+.workrow__track figure {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s var(--spring-smooth), transform 0.6s var(--spring-smooth);
+}
+.workrow.is-open .workrow__track figure { opacity: 1; transform: none; }
+.workrow.is-open .workrow__track figure:nth-child(1) { transition-delay: 60ms; }
+.workrow.is-open .workrow__track figure:nth-child(2) { transition-delay: 120ms; }
+.workrow.is-open .workrow__track figure:nth-child(3) { transition-delay: 180ms; }
+.workrow.is-open .workrow__track figure:nth-child(4) { transition-delay: 240ms; }
+.workrow.is-open .workrow__track figure:nth-child(5) { transition-delay: 300ms; }
+.workrow.is-open .workrow__track figure:nth-child(n + 6) { transition-delay: 360ms; }
+
+/* ---------- Footer ---------- */
+
+.footer.reveal.is-visible > * { opacity: 1; transform: none; }
+.footer > span,
+.footer .footer__links {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.75s var(--spring-smooth), transform 0.75s var(--spring-smooth);
+}
+.footer.is-visible .footer__links { transition-delay: 90ms; }
+
+/* ---------- Druckfeedback ----------
+   Ohne das fuehlt sich jeder Klick an, als haette die Seite ihn nicht
+   registriert — unabhaengig davon, wie schnell sie wirklich ist. */
+
+.btn:active { transform: scale(0.97); }
+.btn { transition: transform 0.16s var(--ease-out), background 0.5s var(--ease-out),
+                   color 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
+
+/* Eine Zeile ueber die ganze Breite zu skalieren sieht falsch aus.
+   Stattdessen quittiert das Plus-Zeichen den Druck. */
+.workrow__head:active .workrow__icon { transform: scale(0.82); }
+.workrow__icon { transition: transform 0.2s var(--ease-out), color 0.4s var(--ease-out); }
+
+.nav__links a:active,
+.contact__mail:active,
+.footer__links a:active { transform: scale(0.97); }
+.nav__links a,
+.contact__mail,
+.footer__links a { transition: transform 0.16s var(--ease-out), color 0.4s var(--ease-out); }
+
+/* ---------- Laufband anhalten ----------
+   WCAG 2.2.2: dauerhafte Bewegung braucht eine Moeglichkeit zum Stoppen.
+   focus-within deckt die Tastatur mit ab. */
+
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track { animation-play-state: paused; }
+
+/* ---------- Reduced Motion ----------
+   Nicht "keine Bewegung", sondern: keine Verschiebung, kein Ueberschwingen,
+   keine Parallaxe. Deckkraft darf blenden. */
+
+@media (prefers-reduced-motion: reduce) {
+  .worklist > .workrow,
+  .services > .service,
+  .cv > .cv__row,
+  .contact__grid > div,
+  .workrow__track figure,
+  .footer > span,
+  .footer .footer__links {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s linear;
+    transition-delay: 0ms !important;
+  }
+  .lnw > .ln { transform: none !important; transition: none; }
+  .lnw { overflow: visible; }
+  .hero__photo { animation: none; transform: scale(1.02); }
+  .btn:active,
+  .nav__links a:active,
+  .contact__mail:active,
+  .footer__links a:active { transform: none; }
+  .workrow__head:active .workrow__icon { transform: none; }
+}
+
+/* ---------- Nav-Entry ----------
+   Bewusst auf den KINDERN, nicht auf .nav selbst: ein transform auf
+   .nav wuerde es zum Containing Block machen und das mobile
+   Vollbild-Menue (position:fixed; inset:0) waere verschoben. */
+
+@keyframes navIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.nav__logo,
+.nav__burger { animation: navIn 0.6s var(--spring-smooth) forwards; }
+
+/* Die Link-Staffelung nur am Desktop — mobil liegen dieselben Links im
+   Vollbild-Menue und haetten zwei konkurrierende Animationen. */
+@media (min-width: 769px) {
+  .nav__links li { animation: navIn 0.6s var(--spring-smooth) both; }
+  .nav__links li:nth-child(1) { animation-delay: 60ms; }
+  .nav__links li:nth-child(2) { animation-delay: 105ms; }
+  .nav__links li:nth-child(3) { animation-delay: 150ms; }
+  .nav__links li:nth-child(4) { animation-delay: 195ms; }
+  .nav__links li:nth-child(5) { animation-delay: 240ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__logo,
+  .nav__burger,
+  .nav__links li { animation: none; opacity: 1; transform: none; }
 }
