@@ -45,7 +45,7 @@ body::after {
 
 ::selection { background: var(--accent); color: #0a0a0c; }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; }
 
 .accent { color: var(--accent); }
@@ -108,7 +108,7 @@ a { color: inherit; text-decoration: none; }
 .hero__photo {
   position: absolute;
   inset: 0;
-  background: url("assets/dennis.jpg") 78% 26% / cover no-repeat;
+  background: url("assets/dennis.avif") 78% 26% / cover no-repeat;
   filter: grayscale(0.75) contrast(1.05) brightness(0.52);
 }
 
