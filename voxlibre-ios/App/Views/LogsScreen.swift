@@ -28,7 +28,7 @@ struct LogsScreen: View {
                     .padding(12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .onChange(of: logs.lines.count) { _ in
+                .onChange(of: logs.lines.last?.id) { _ in
                     if let last = shown.last {
                         proxy.scrollTo(last.id, anchor: .bottom)
                     }

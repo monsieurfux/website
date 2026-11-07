@@ -14,12 +14,15 @@ struct RootView: View {
         NavigationStack {
             TabView(selection: $tab) {
                 RingScreen()
+                    .chromeTabBar()
                     .tabItem { Label("Ring", systemImage: "dot.radiowaves.left.and.right") }
                     .tag(0)
                 LibraryScreen()
+                    .chromeTabBar()
                     .tabItem { Label("Recordings", systemImage: "mic") }
                     .tag(1)
                 LogsScreen(logs: engine.logStore)
+                    .chromeTabBar()
                     .tabItem { Label("Logs", systemImage: "doc.text") }
                     .tag(2)
             }
@@ -51,8 +54,6 @@ struct RootView: View {
             }
             .toolbarBackground(Theme.bgChrome, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Theme.bgChrome, for: .tabBar)
-            .toolbarBackground(.visible, for: .tabBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
         }
         .overlay(alignment: .bottom) {
@@ -73,5 +74,14 @@ struct RootView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
+    }
+}
+
+private extension View {
+    /// Dark chrome for the tab bar. Must be applied to the tab's content, not to the TabView.
+    func chromeTabBar() -> some View {
+        self
+            .toolbarBackground(Theme.bgChrome, for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
     }
 }

@@ -16,9 +16,9 @@ struct RingScreen: View {
     }
 
     private struct Chip: Identifiable {
-        let id = UUID()
         let text: String
         let icon: String
+        var id: String { return text }
     }
 
     private var chips: [Chip] {

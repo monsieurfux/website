@@ -40,6 +40,8 @@ final class LibraryTests: XCTestCase {
     func testParseDuration() {
         XCTAssertEqual(RingLibrary.parseDuration(durationJSON), 12345)
         XCTAssertEqual(RingLibrary.parseDuration(Array(#"{"duration":[0,987]}"#.utf8)), 987)
+        // trailing comma / NUL padding (org.json tolerated this)
+        XCTAssertEqual(RingLibrary.parseDuration(Array(#"{"duration":["0","77"]},"#.utf8) + [0, 0]), 77)
         XCTAssertNil(RingLibrary.parseDuration(Array(#"{"record":[]}"#.utf8)))
         XCTAssertNil(RingLibrary.parseDuration(Array("not json".utf8)))
         XCTAssertNil(RingLibrary.parseDuration([]))

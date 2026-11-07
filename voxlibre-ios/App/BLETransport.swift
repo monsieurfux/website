@@ -194,6 +194,7 @@ final class BLETransport: NSObject, RingLink {
     }
 
     private func start(_ p: CBPeripheral) {
+        resetGattState()
         peripheral = p
         p.delegate = self
         log("connecting \(p.name ?? "?") \(p.identifier.uuidString)")
@@ -228,6 +229,11 @@ final class BLETransport: NSObject, RingLink {
 
     private func resetLinkState() {
         peripheral = nil
+        resetGattState()
+    }
+
+    /// Everything tied to one GATT session (characteristics, queues, partial frames) — not the peripheral itself.
+    private func resetGattState() {
         authCh = nil
         ctrlWCh = nil
         ctrlNCh = nil
@@ -315,13 +321,21 @@ extension BLETransport: CBCentralManagerDelegate {
             updateScan()
         case .poweredOff:
             onBluetoothProblem("Bluetooth is turned off.")
+            dropLinkIfActive()
         case .unauthorized:
             onBluetoothProblem("Bluetooth access is denied. Enable it in Settings ▸ VoxLibre.")
+            dropLinkIfActive()
         case .unsupported:
             onBluetoothProblem("This device does not support Bluetooth LE.")
         default:
             break
         }
+    }
+
+    /// iOS does not reliably deliver `didDisconnectPeripheral` when Bluetooth goes away; make sure the
+    /// session never stays "active" on a link that no longer exists.
+    private func dropLinkIfActive() {
+        if peripheral != nil || session?.isActive == true { failConnect() }
     }
 
     func centralManager(_ c: CBCentralManager, didDiscover p: CBPeripheral,
@@ -348,7 +362,7 @@ extension BLETransport: CBCentralManagerDelegate {
         guard p.identifier == peripheral?.identifier else { return }
         connectTimeout?.cancel()
         pendingConnectID = nil
-        log("connected, MTU payload ≈ \(p.maximumWriteValueLength(for: .withResponse)) B")
+        log("connected, MTU payload ≈ \(p.maximumWriteValueLength(for: .withoutResponse)) B")
         session?.onConnected()
         p.discoverServices([BLETransport.svcUUID, BLETransport.dsvcUUID])
     }
@@ -380,6 +394,7 @@ extension BLETransport: CBCentralManagerDelegate {
 
 extension BLETransport: CBPeripheralDelegate {
     func peripheral(_ p: CBPeripheral, didDiscoverServices error: Error?) {
+        guard p.identifier == peripheral?.identifier else { return }   // late callback of a dead link
         if let e = error {
             log("service discovery failed: \(e.localizedDescription)")
             failConnect()
@@ -396,6 +411,7 @@ extension BLETransport: CBPeripheralDelegate {
     }
 
     func peripheral(_ p: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        guard p.identifier == peripheral?.identifier else { return }   // late callback of a dead link
         if let e = error { log("characteristic discovery failed for \(service.uuid): \(e.localizedDescription)") }
         discoveriesPending -= 1
         guard discoveriesPending <= 0 else { return }
@@ -416,6 +432,7 @@ extension BLETransport: CBPeripheralDelegate {
     }
 
     func peripheral(_ p: CBPeripheral, didUpdateNotificationStateFor ch: CBCharacteristic, error: Error?) {
+        guard p.identifier == peripheral?.identifier else { return }   // late callback of a dead link
         if let e = error {
             log("enabling notifications failed for \(ch.uuid): \(e.localizedDescription)")
             failConnect()
@@ -427,12 +444,14 @@ extension BLETransport: CBPeripheralDelegate {
     }
 
     func peripheral(_ p: CBPeripheral, didWriteValueFor ch: CBCharacteristic, error: Error?) {
+        guard p.identifier == peripheral?.identifier else { return }   // late callback of a dead link
         if let e = error { log("write failed for \(ch.uuid): \(e.localizedDescription)") }
         writing = false
         pumpWrite()
     }
 
     func peripheral(_ p: CBPeripheral, didUpdateValueFor ch: CBCharacteristic, error: Error?) {
+        guard p.identifier == peripheral?.identifier else { return }   // late callback of a dead link
         if let e = error {
             log("notification error for \(ch.uuid): \(e.localizedDescription)")
             return

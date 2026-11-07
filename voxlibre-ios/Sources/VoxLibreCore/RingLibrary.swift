@@ -129,7 +129,12 @@ final class RingLibrary {
     ///   {"record":[...]},{"duration":["<start>","<end>"]},{"record":[...]}
     /// Wrap in [] and take index 1 of the object that carries "duration" as milliseconds.
     static func parseDuration(_ bytes: [UInt8]) -> Int? {
-        let text = "[" + Bytes.utf8(bytes) + "]"
+        var body = bytes
+        let junk: Set<UInt8> = [0x00, 0x2C, 0x20, 0x0A, 0x0D, 0x09]   // NUL , space \n \r \t
+        while let last = body.last, junk.contains(last) {
+            body.removeLast()   // stray NULs / trailing comma / whitespace after the last object
+        }
+        let text = "[" + Bytes.utf8(body) + "]"
         guard let data = text.data(using: .utf8),
               let events = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [Any] else { return nil }
         for e in events {
