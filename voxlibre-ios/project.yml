@@ -1,0 +1,59 @@
+# XcodeGen spec – run `xcodegen generate` in this folder, then open VoxLibre.xcodeproj.
+# (brew install xcodegen)
+name: VoxLibre
+
+options:
+  bundleIdPrefix: app.voxlibre
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    # Set your Apple ID team in Xcode ▸ target ▸ Signing & Capabilities (a free personal team works).
+
+targets:
+  VoxLibre:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      # The platform-neutral core is compiled straight into the app (same files `swift test` covers),
+      # so none of it needs `public`.
+      - path: Sources/VoxLibreCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.voxlibre.ios
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: VoxLibre
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSBluetoothAlwaysUsageDescription: VoxLibre talks to your Vocci smart ring over Bluetooth to read its status and download your recordings.
+        # keep the ring connection alive while backgrounded; keep playback going with the screen locked
+        UIBackgroundModes:
+          - bluetooth-central
+          - audio
+        # downloaded recordings are visible in the Files app
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
